@@ -23,7 +23,7 @@ jobs:
 
       
       - name: Show configured JFrog CLI server
-        run: jf c show default
+        run: jf c show 
            
       - name: Set up Node.js
         uses: actions/setup-node@v4
