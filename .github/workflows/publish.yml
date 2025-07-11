@@ -24,7 +24,7 @@ jobs:
 
       - name: Configure npm to use Artifactory virtual repo
         run: |
-          echo "email=${{JF_LOGIN}}" >> .npmrc
+          echo "email=${{secrets.JF_LOGIN}}" >> .npmrc
           echo "always-auth=true" >> .npmrc
           echo "registry=https://atslist8.jfrog.io/artifactory/crm-dev-npm" >> .npmrc
           echo "//atslist8.jfrog.io/artifactory/crm-dev-npm/:_authToken=${{ secrets.NPM_TOKEN }}" >> .npmrc
