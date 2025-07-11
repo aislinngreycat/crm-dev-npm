@@ -11,31 +11,32 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
+      - name: Setup JFrog CLI
+        uses: jfrog/setup-jfrog-cli@v4
+        env:  
+           JF_URL: ${{ vars.JF_URL }}
+           JF_ACCESS_TOKEN: ${{ secrets.JF_ACCESS_TOKEN }}
+           
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '20'
+
+      - name: Set CLI Config
+        run: jf npm-config --global=true --repo-resolve=crm-dev-npm --repo-deploy=crm-dev-npm
+           
+      - name: Install Deps
+        run: jf npm install
 
       - name: Configure npm to use Artifactory virtual repo
         run: |
           REGISTRY_URL="${{ secrets.JFROG_URL }}artifactory/crm-npm-dev/"
           npm config set registry "$REGISTRY_URL"
           AUTH_URL=$(echo "$REGISTRY_URL" | sed 's|https://||')
-          echo "//${AUTH_URL}:_authToken=${{ secrets.JFROG_PASSWORD }}" >> ~/.npmrc
+          echo "//${AUTH_URL}:_authToken=${{ secrets.JF_ACCESS_TOKEN }}" >> ~/.npmrc
           echo "always-auth=true" >> ~/.npmrc
 
       - name: Install dependencies
         working-directory: ./frontend
         run: npm install
 
-      - name: Install JFrog CLI
-        run: |
-          curl -fL https://install-cli.jfrog.io | sh
-          sudo mv jfrog /usr/local/bin/
-
-      - name: Configure JFrog CLI
-        run: |
-          jfrog config add art \
-            --url=${{ secrets.JFROG_URL }} \
-            --access-token=${{ secrets.JFROG_PASSWORD }} \
-            --interactive=false
