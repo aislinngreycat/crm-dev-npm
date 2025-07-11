@@ -11,27 +11,26 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
+      - name: Setup JFrog CLI
+        uses: jfrog/setup-jfrog-cli@v4
+        env:  
+           JF_URL: ${{ vars.JF_URL }}
+           JF_ACCESS_TOKEN: ${{ secrets.JF_ACCESS_TOKEN }}
+           
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '20'
 
+
       - name: Configure npm to use Artifactory virtual repo
         run: |
-          npm config set registry ${{ secrets.JFROG_URL }}
-          echo "//$(echo ${{ secrets.JFROG_URL }} | sed 's|https://||'):_authToken=${{ secrets.JFROG_PASSWORD }}" >> ~/.npmrc
+          echo "email=atsadmin@atslist8.com" >> .npmrc
+          echo "always-auth=true" >> .npmrc
+          echo "registry=https://atslist8.jfrog.io/artifactory/crm-dev-npm" >> .npmrc
+          echo "//atslist8.jfrog.io/artifactory/crm-dev-npm/:_authToken=${{ secrets.NPM_TOKEN }}" >> .npmrc
 
       - name: Install dependencies
+        working-directory: ./frontend
         run: npm install
 
-      - name: Install JFrog CLI
-        run: |
-          curl -fL https://install-cli.jfrog.io | sh
-          sudo mv jfrog /usr/local/bin/
-
-      - name: Configure JFrog CLI
-        run: |
-          jfrog config add art \
-            --url=${{ secrets.JFROG_URL }} \
-            --access-token=${{ secrets.JFROG_PASSWORD }} \
-            --interactive=false
