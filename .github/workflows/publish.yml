@@ -44,13 +44,13 @@ jobs:
         run: |
           rm -rf node_modules package-lock.json
  
-      - name: Install dependencies
-        working-directory: ./frontend
-        run: npm install  --no-workspaces
+     # - name: Install dependencies
+     #   working-directory: ./frontend
+      #  run: npm install  --no-workspaces
 
       - name: Deployment of Artifacts Using JFrog CLI
         run: |
-            jf rt upload "frontend/**" "crm-npm-dev" --recursive=true
+            jf rt upload "frontend/**" "crm-npm-dev/" --recursive=true
    
 
       - name: Completion message
