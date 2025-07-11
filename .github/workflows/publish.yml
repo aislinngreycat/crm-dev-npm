@@ -39,16 +39,19 @@ jobs:
          
           #echo "//atslist8.jfrog.io/artifactory/crm-dev-npm/:_authToken=${{ secrets.NPM_TOKEN }}" >> .npmrc
 
+      - name: Clear node_modules and package-lock.json
+        working-directory: ./frontend
+        run: |
+          rm -rf node_modules package-lock.json
+ 
       - name: Install dependencies
         working-directory: ./frontend
-        run: npm install
+        run: npm install  --no-workspaces
 
-    
-     # - name: Deployment of Artifacts Using JFrog CLI
-     #   run: |
-     #     jf rt upload "frontend/**" "crm-npm-dev" --recursive=true
-     #     jf rt upload "backend/**" "crm-npm-dev" --recursive=true
-     #     jf rt upload "shared/**" "crm-npm-dev" --recursive=true
+      - name: Deployment of Artifacts Using JFrog CLI
+        run: |
+            jf rt upload "frontend/**" "crm-npm-dev" --recursive=true
+   
 
       - name: Completion message
         run: echo "🎉 Files Deployed"
