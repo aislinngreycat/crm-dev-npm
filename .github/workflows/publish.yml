@@ -22,6 +22,7 @@ jobs:
           echo "//$(echo ${{ secrets.JFROG_URL }} /crm-npm-dev/| sed 's|https://||'):_authToken=${{ secrets.JFROG_PASSWORD }}" >> ~/.npmrc
 
       - name: Install dependencies
+        working-directory: ./frontend
         run: npm install
 
       - name: Install JFrog CLI
