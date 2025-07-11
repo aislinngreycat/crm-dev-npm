@@ -43,7 +43,8 @@ jobs:
         working-directory: ./frontend
         run: |
           rm -rf node_modules package-lock.json
- 
+          
+     #   Commented out to speed up workflow run during test
      # - name: Install dependencies
      #   working-directory: ./frontend
       #  run: npm install  --no-workspaces
@@ -54,4 +55,4 @@ jobs:
    
 
       - name: Completion message
-        run: echo "🎉 Files Deployed"
+        run: echo "Successful Deployment"
