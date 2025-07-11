@@ -20,6 +20,10 @@ jobs:
       - run: |
           # Ping the server
           jf rt ping
+
+      
+      - name: Show configured JFrog CLI server
+        run: jf c show default
            
       - name: Set up Node.js
         uses: actions/setup-node@v4
@@ -37,12 +41,12 @@ jobs:
         working-directory: ./frontend
         run: npm install
 
-
-      - name: Upload code files to Artifactory
-        run: |
-          jf rt upload "frontend/**" "crm-npm-dev" --recursive=true
-          jf rt upload "backend/**" "crm-npm-dev" --recursive=true
-          jf rt upload "shared/**" "crm-npm-dev" --recursive=true
+    
+     # - name: Deployment of Artifacts Using JFrog CLI
+     #   run: |
+     #     jf rt upload "frontend/**" "crm-npm-dev" --recursive=true
+     #     jf rt upload "backend/**" "crm-npm-dev" --recursive=true
+     #     jf rt upload "shared/**" "crm-npm-dev" --recursive=true
 
       - name: Completion message
         run: echo "🎉 Files Deployed"
