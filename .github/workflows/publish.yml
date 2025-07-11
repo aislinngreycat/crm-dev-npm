@@ -16,13 +16,10 @@ jobs:
         env:  
            JF_URL: ${{ secrets.JF_URL }}
            JF_ACCESS_TOKEN: ${{ secrets.JF_ACCESS_TOKEN }}
-
-      - name: Configure JFrog CLI
-        run: |
-          jfrog config add art \
-            --url=${{ secrets.JFROG_URL }} \
-            --access-token=${{ secrets.JF_CI_PASSWORD }} \
-            --interactive=false
+           
+      - run: |
+          # Ping the server
+          jf rt ping
            
       - name: Set up Node.js
         uses: actions/setup-node@v4
@@ -40,3 +37,12 @@ jobs:
         working-directory: ./frontend
         run: npm install
 
+
+      - name: Upload code files to Artifactory
+        run: |
+          jf rt upload "frontend/**" "crm-npm-dev" --recursive=true
+          jf rt upload "backend/**" "crm-npm-dev" --recursive=true
+          jf rt upload "shared/**" "crm-npm-dev" --recursive=true
+
+      - name: Completion message
+        run: echo "🎉 Files Deployed"
