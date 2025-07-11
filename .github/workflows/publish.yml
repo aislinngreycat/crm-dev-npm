@@ -20,6 +20,7 @@ jobs:
         run: |
           npm config set registry ${{ secrets.JFROG_URL }}artifactory/crm-npm-dev/
           echo "//$(echo ${{ secrets.JFROG_URL }} artifactory/crm-npm-dev/| sed 's|https://||'):_authToken=${{ secrets.JFROG_PASSWORD }}" >> ~/.npmrc
+          echo "always-auth=true" >> .npmrc
 
       - name: Install dependencies
         working-directory: ./frontend
