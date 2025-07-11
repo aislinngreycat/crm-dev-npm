@@ -16,6 +16,13 @@ jobs:
         env:  
            JF_URL: ${{ secrets.JF_URL }}
            JF_ACCESS_TOKEN: ${{ secrets.JF_ACCESS_TOKEN }}
+
+      - name: Configure JFrog CLI
+        run: |
+          jfrog config add art \
+            --url=${{ secrets.JFROG_URL }} \
+            --access-token=${{ secrets.JF_CI_PASSWORD }} \
+            --interactive=false
            
       - name: Set up Node.js
         uses: actions/setup-node@v4
