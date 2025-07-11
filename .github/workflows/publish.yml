@@ -34,7 +34,7 @@ jobs:
         run: |
           echo "email=${{secrets.JF_LOGIN}}" >> .npmrc
           echo "always-auth=true" >> .npmrc
-          echo "registry=https://atslist8.jfrog.io/artifactory/crm-dev-npm" >> .npmrc
+          echo "registry=${{ secrets.JF_URL }}/artifactory/crm-dev-npm" >> .npmrc
           echo "//atslist8.jfrog.io/artifactory/crm-dev-npm/:_authToken=${{ secrets.NPM_TOKEN }}" >> .npmrc
 
       - name: Install dependencies
