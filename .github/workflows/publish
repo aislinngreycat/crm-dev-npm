@@ -1,0 +1,44 @@
+name: Resolve NPM Upload Code via JFrog CLI
+
+on:
+  workflow_dispatch:
+
+jobs:
+  upload-code:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Configure npm to use Artifactory virtual repo
+        run: |
+          npm config set registry ${{ secrets.JFROG_URL }}/api/npm/npm-all/
+          echo "//$(echo ${{ secrets.JFROG_URL }} | sed 's|https://||')/api/npm/npm-all/:_authToken=${{ secrets.JFROG_PASSWORD }}" >> ~/.npmrc
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Install JFrog CLI
+        run: |
+          curl -fL https://install-cli.jfrog.io | sh
+          sudo mv jfrog /usr/local/bin/
+
+      - name: Configure JFrog CLI
+        run: |
+          jfrog config add art \
+            --url=${{ secrets.JFROG_URL }} \
+            --access-token=${{ secrets.JFROG_PASSWORD }} \
+            --interactive=false
+
+      # ✅ Upload your code (e.g., src, dist, zip, or custom files)
+      - name: Upload code files to Artifactory
+        run: |
+          jfrog rt upload "frontend/**" "crm-npm-dev" --recursive=true
+          jfrog rt upload "backend/**" "crm-npm-dev" --recursive=true
+          jfrog rt upload "shared/**" "crm-npm-dev" --recursive=true
