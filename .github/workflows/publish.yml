@@ -18,9 +18,11 @@ jobs:
 
       - name: Configure npm to use Artifactory virtual repo
         run: |
-          npm config set registry ${{ secrets.JFROG_URL }}artifactory/crm-npm-dev/
-          echo "//$(echo ${{ secrets.JFROG_URL }} artifactory/crm-npm-dev/| sed 's|https://||'):_authToken=${{ secrets.JFROG_PASSWORD }}" >> ~/.npmrc
-          echo "always-auth=true" >> .npmrc
+          REGISTRY_URL="${{ secrets.JFROG_URL }}artifactory/crm-npm-dev/"
+          npm config set registry "$REGISTRY_URL"
+          AUTH_URL=$(echo "$REGISTRY_URL" | sed 's|https://||')
+          echo "//${AUTH_URL}:_authToken=${{ secrets.JFROG_PASSWORD }}" >> ~/.npmrc
+          echo "always-auth=true" >> ~/.npmrc
 
       - name: Install dependencies
         working-directory: ./frontend
