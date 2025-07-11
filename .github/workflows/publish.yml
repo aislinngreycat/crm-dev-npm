@@ -50,7 +50,7 @@ jobs:
 
       - name: Deployment of Artifacts Using JFrog CLI
         run: |
-            jf rt upload "frontend/**" "/artifactory/crm-dev-npm/" --recursive=true
+            jf rt upload "frontend/**" "crm-dev-npm/"  --url=https://atslist8.jfrog.io/artifactory/ --recursive=true
    
 
       - name: Completion message
