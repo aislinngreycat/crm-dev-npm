@@ -22,11 +22,6 @@ jobs:
         with:
           node-version: '20'
 
-      - name: Set CLI Config
-        run: jf npm-config --global=true --repo-resolve=crm-dev-npm --repo-deploy=crm-dev-npm
-           
-      - name: Install Deps
-        run: jf npm install
 
       - name: Configure npm to use Artifactory virtual repo
         run: |
