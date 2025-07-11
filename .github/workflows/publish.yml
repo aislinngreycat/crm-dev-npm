@@ -18,8 +18,8 @@ jobs:
 
       - name: Configure npm to use Artifactory virtual repo
         run: |
-          npm config set registry ${{ secrets.JFROG_URL }}/crm-npm-dev/
-          echo "//$(echo ${{ secrets.JFROG_URL }} | sed 's|https://||')/crm-npm-dev/:_authToken=${{ secrets.JFROG_PASSWORD }}" >> ~/.npmrc
+          npm config set registry ${{ secrets.JFROG_URL }}
+          echo "//$(echo ${{ secrets.JFROG_URL }} | sed 's|https://||'):_authToken=${{ secrets.JFROG_PASSWORD }}" >> ~/.npmrc
 
       - name: Install dependencies
         run: npm install
