@@ -3,6 +3,10 @@ name: Resolve NPM Upload Code via JFrog CLI
 on:
   workflow_dispatch:
 
+#push:
+ #   branches:
+  #    - main
+
 jobs:
   upload-code:
     runs-on: ubuntu-latest
